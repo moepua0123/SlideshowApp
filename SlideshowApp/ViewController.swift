@@ -87,7 +87,6 @@ class ViewController: UIViewController {
         
         
         
-        
     }
     
     //アプリを開いた時に画像が表示される
@@ -109,27 +108,25 @@ class ViewController: UIViewController {
     }
     
     @IBAction func unwind(_ segue: UIStoryboardSegue) {
-        if timer == nil{
-            self.timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(updateTimer(_:)), userInfo: nil, repeats: true)
-            //ボタンの名前を停止に変わる
-            startpausebutton.setTitle("停止", for: .normal)
-            backwordbutton.isEnabled = false
-            forwordbutton.isEnabled = false
-            
-        }
+        
     }
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let resultViewController:ResultViewController = segue.destination as! ResultViewController
         
         
-        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            let resultViewController:ResultViewController = segue.destination as! ResultViewController
-            if timer != nil {
-                self.timer.invalidate()
-                self.timer = nil
-            }
-            
-            resultViewController.image = imageview.image!
+        if timer != nil {
+            startpausebutton.setTitle("再生", for: .normal)
+            backwordbutton.isEnabled = true
+            forwordbutton.isEnabled = true
+            self.timer.invalidate()
+            self.timer = nil
         }
         
+        resultViewController.image = imageview.image!
+    }
+    
 }
 
 
