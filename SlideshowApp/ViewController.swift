@@ -38,7 +38,7 @@ class ViewController: UIViewController {
     
     //再生停止ボタン
     @IBAction func startpausebuttonTap(_ sender: Any) {
-       
+        
         //もしタイマーがなかったら、タイマーを設定する
         if self.timer == nil {
             self.timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(updateTimer(_:)), userInfo: nil, repeats: true)
@@ -107,22 +107,29 @@ class ViewController: UIViewController {
         imageview.image = UIImage(named:imagenameArray[displayimagenumber])
         
     }
-    //画像をタップしたら画面遷移する
+    
     @IBAction func unwind(_ segue: UIStoryboardSegue) {
-        
-    }
-    
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-         let resultViewController:ResultViewController = segue.destination as! ResultViewController
-        if timer != nil {
-            self.timer.invalidate()
-                   self.timer = nil
+        if timer == nil{
+            self.timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(updateTimer(_:)), userInfo: nil, repeats: true)
+            //ボタンの名前を停止に変わる
+            startpausebutton.setTitle("停止", for: .normal)
+            backwordbutton.isEnabled = false
+            forwordbutton.isEnabled = false
+            
         }
-       
-        resultViewController.image = imageview.image!
     }
-    
+        
+        
+        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+            let resultViewController:ResultViewController = segue.destination as! ResultViewController
+            if timer != nil {
+                self.timer.invalidate()
+                self.timer = nil
+            }
+            
+            resultViewController.image = imageview.image!
+        }
+        
 }
 
 
