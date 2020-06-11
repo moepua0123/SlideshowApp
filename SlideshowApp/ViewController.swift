@@ -27,7 +27,6 @@ class ViewController: UIViewController {
     @objc func updateTimer(_ timer: Timer) {
         displayimagenumber += 1
         
-        
         if displayimagenumber >= 5 {
             displayimagenumber = 0
             displayImage()
@@ -39,17 +38,20 @@ class ViewController: UIViewController {
     
     //再生停止ボタン
     @IBAction func startpausebuttonTap(_ sender: Any) {
+       
         //もしタイマーがなかったら、タイマーを設定する
         if self.timer == nil {
             self.timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(updateTimer(_:)), userInfo: nil, repeats: true)
             //ボタンの名前を停止に変わる
             startpausebutton.setTitle("停止", for: .normal)
-            
+            backwordbutton.isEnabled = false
+            forwordbutton.isEnabled = false
         } else {
             //タイマーが動作していたら実行される　タイマーを止める処理
             self.timer.invalidate()   // タイマーを停止する
             self.timer = nil
-            
+            backwordbutton.isEnabled = true
+            forwordbutton.isEnabled = true
             startpausebutton.setTitle("再生", for: .normal)
         }
     }
@@ -80,6 +82,7 @@ class ViewController: UIViewController {
             //５枚目の画像を表示している時に進むボタンを押したら１枚目の画像が表示されるための処理
         } else {
             displayImage()
+            
         }
         
         
@@ -106,11 +109,17 @@ class ViewController: UIViewController {
     }
     //画像をタップしたら画面遷移する
     @IBAction func unwind(_ segue: UIStoryboardSegue) {
+        
     }
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
          let resultViewController:ResultViewController = segue.destination as! ResultViewController
-        
+        if timer != nil {
+            self.timer.invalidate()
+                   self.timer = nil
+        }
+       
         resultViewController.image = imageview.image!
     }
     
